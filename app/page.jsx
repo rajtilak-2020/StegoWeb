@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Zap
 } from 'lucide-react';
+import { OriginButton } from '../components/ui/origin-button';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('encode'); 
@@ -207,30 +208,30 @@ export default function Home() {
               />
             </div>
 
-            <button 
+            <OriginButton 
               onClick={handleEncode}
               disabled={!encodeImage || !message}
-              className="w-full bg-brand-500 hover:bg-brand-400 text-black font-bold py-3.5 px-4 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:bg-surface-border disabled:text-gray-500 flex justify-center items-center group shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:shadow-[0_0_25px_rgba(20,184,166,0.5)] active:scale-[0.98]"
+              className="w-full bg-brand-500 hover:bg-brand-400 text-black font-bold py-3.5 px-4 rounded-xl disabled:opacity-50 disabled:bg-surface-border disabled:text-gray-500 shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:shadow-[0_0_25px_rgba(20,184,166,0.5)] flex items-center justify-center group border-none"
             >
               <Lock className="mr-2 group-hover:scale-110 transition-transform" size={18} /> INITIALIZE ENCRYPTION
-            </button>
+            </OriginButton>
           </div>
 
           {/* Result / Decode Section */}
           <div className="bg-surface-light/40 backdrop-blur-xl border border-surface-border rounded-2xl p-8 shadow-2xl flex flex-col transition-all duration-300 hover:border-surface-border/80">
             <div className="flex bg-black/50 p-1 rounded-xl mb-8 border border-surface-border">
-              <button 
+              <OriginButton 
                 onClick={() => setActiveTab('result')}
-                className={`flex-1 py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 ${activeTab === 'result' || activeTab === 'encode' ? 'bg-surface-lighter text-brand-400 shadow-sm' : 'text-gray-500 hover:text-gray-300'}`}
+                className={`flex-1 h-auto py-2.5 px-4 rounded-lg font-medium text-sm border-none ${activeTab === 'result' || activeTab === 'encode' ? 'bg-surface-lighter text-brand-400 shadow-sm' : 'bg-transparent text-gray-500 hover:text-gray-300 hover:bg-transparent'}`}
               >
                 Output Asset
-              </button>
-              <button 
+              </OriginButton>
+              <OriginButton 
                 onClick={() => setActiveTab('decode')}
-                className={`flex-1 py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 ${activeTab === 'decode' ? 'bg-surface-lighter text-brand-400 shadow-sm' : 'text-gray-500 hover:text-gray-300'}`}
+                className={`flex-1 h-auto py-2.5 px-4 rounded-lg font-medium text-sm border-none ${activeTab === 'decode' ? 'bg-surface-lighter text-brand-400 shadow-sm' : 'bg-transparent text-gray-500 hover:text-gray-300 hover:bg-transparent'}`}
               >
                 Decrypt & Extract
-              </button>
+              </OriginButton>
             </div>
 
             <div className="flex-1 flex flex-col">
@@ -252,13 +253,17 @@ export default function Home() {
                       <div className="mb-8 text-center flex-1 flex items-center justify-center bg-black/40 border border-surface-border rounded-xl p-4">
                         <img src={encodedResult} className="max-h-64 rounded shadow-[0_0_30px_rgba(20,184,166,0.15)] ring-1 ring-brand-500/30" alt="Encoded image" />
                       </div>
-                      <a 
-                        href={encodedResult} 
-                        download="secure-asset.png"
-                        className="w-full bg-white hover:bg-gray-200 text-black font-bold py-3.5 px-4 rounded-xl transition-all duration-300 flex justify-center items-center group active:scale-[0.98]"
+                      <OriginButton 
+                        onClick={() => {
+                          const link = document.createElement('a');
+                          link.href = encodedResult;
+                          link.download = 'secure-asset.png';
+                          link.click();
+                        }}
+                        className="w-full bg-white hover:bg-gray-200 text-black font-bold py-3.5 px-4 rounded-xl flex items-center justify-center group border-none"
                       >
                         <Download className="mr-2 group-hover:-translate-y-1 transition-transform" size={18} /> EXPORT SECURE ASSET
-                      </a>
+                      </OriginButton>
                     </div>
                   )}
                 </div>
@@ -307,13 +312,13 @@ export default function Home() {
                     />
                   </div>
 
-                  <button 
+                  <OriginButton 
                     onClick={handleDecode}
                     disabled={!decodeImage}
-                    className="w-full mb-6 bg-brand-500 hover:bg-brand-400 text-black font-bold py-3.5 px-4 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:bg-surface-border disabled:text-gray-500 flex justify-center items-center group active:scale-[0.98] shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:shadow-[0_0_25px_rgba(20,184,166,0.5)]"
+                    className="w-full mb-6 bg-brand-500 hover:bg-brand-400 text-black font-bold py-3.5 px-4 rounded-xl disabled:opacity-50 disabled:bg-surface-border disabled:text-gray-500 shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:shadow-[0_0_25px_rgba(20,184,166,0.5)] flex items-center justify-center group border-none"
                   >
                     <Unlock className="mr-2 group-hover:scale-110 transition-transform" size={18} /> DECRYPT & EXTRACT
-                  </button>
+                  </OriginButton>
 
                   {decodedMessage && (
                     <div className="mt-2 p-5 bg-black/80 border border-brand-500/30 rounded-xl shadow-[0_0_20px_rgba(20,184,166,0.1)] animate-fade-in relative overflow-hidden">
