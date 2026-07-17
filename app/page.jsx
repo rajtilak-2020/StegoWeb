@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { encodeMessageInImage, decodeMessageFromImage } from '../lib/stego';
 import { 
   Lock, 
@@ -8,38 +8,13 @@ import {
   Image as ImageIcon, 
   Download, 
   AlertTriangle, 
-  Sun, 
-  Moon,
-  Eye,
-  EyeOff
+  ShieldCheck,
+  Zap
 } from 'lucide-react';
 
 export default function Home() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [activeTab, setActiveTab] = useState('encode'); // 'encode' or 'decode'
+  const [activeTab, setActiveTab] = useState('encode'); 
   
-  // Theme logic
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        setIsDarkMode(true);
-        document.documentElement.classList.add('dark');
-      }
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    if (!isDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  };
-
   // Encode State
   const [encodeImage, setEncodeImage] = useState(null);
   const [encodeImageData, setEncodeImageData] = useState(null);
@@ -96,14 +71,14 @@ export default function Home() {
       return;
     }
     setError('');
-    setLoadingText('Encoding your message...');
+    setLoadingText('Encrypting & Embedding...');
     setLoading(true);
     
     setTimeout(() => {
       try {
         const result = encodeMessageInImage(encodeImageData, message, usePassword ? password : '');
         setEncodedResult(result);
-        setActiveTab('result'); // Switch to result tab after encode
+        setActiveTab('result'); 
       } catch (err) {
         setError(err.message || 'An error occurred while encoding.');
       } finally {
@@ -118,7 +93,7 @@ export default function Home() {
       return;
     }
     setError('');
-    setLoadingText('Decoding hidden message...');
+    setLoadingText('Extracting & Decrypting...');
     setLoading(true);
     
     setTimeout(() => {
@@ -135,57 +110,65 @@ export default function Home() {
 
   return (
     <>
-      <header className="bg-white dark:bg-gray-800 shadow-sm relative z-10">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <Lock className="text-indigo-600 dark:text-indigo-400" />
-            <h1 className="text-xl font-semibold">StegoWeb</h1>
+      <header className="border-b border-surface-border bg-black/50 backdrop-blur-md sticky top-0 z-40">
+        <div className="container mx-auto px-6 py-5 flex justify-between items-center">
+          <div className="flex items-center space-x-3">
+            <div className="bg-brand-500/10 p-2 rounded-lg border border-brand-500/20">
+              <ShieldCheck className="text-brand-500" size={24} />
+            </div>
+            <h1 className="text-2xl font-bold tracking-tight">CryptoLens</h1>
           </div>
-          <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-            {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </button>
+          <div className="hidden sm:flex items-center space-x-2 text-xs font-medium px-3 py-1.5 rounded-full bg-brand-500/10 text-brand-400 border border-brand-500/20">
+            <Zap size={14} className="mr-1" /> AES-256 Secured
+          </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 flex-1">
-        <section className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4 text-indigo-700 dark:text-indigo-400">Hide Your Secret Messages Inside Images</h2>
-          <p className="text-lg max-w-2xl mx-auto text-gray-600 dark:text-gray-300">
-            A simple steganography tool for educational purpose.
+      <main className="container mx-auto px-6 py-12 flex-1 flex flex-col items-center">
+        <section className="text-center mb-16 max-w-3xl animate-fade-in">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-transparent bg-clip-text bg-glow-gradient">
+            Military-Grade Steganography
+          </h2>
+          <p className="text-lg text-gray-400 leading-relaxed">
+            Conceal highly sensitive information inside standard images. Zero server uploads. True end-to-end client-side encryption.
           </p>
         </section>
 
         {error && (
-          <div className="max-w-6xl mx-auto mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-400 px-4 py-3 rounded flex items-center">
-            <AlertTriangle className="mr-2" />
-            <p>{error}</p>
+          <div className="w-full max-w-5xl mb-8 bg-red-500/10 border border-red-500/50 text-red-400 px-5 py-4 rounded-xl flex items-center shadow-[0_0_15px_rgba(239,68,68,0.1)]">
+            <AlertTriangle className="mr-3 flex-shrink-0" />
+            <p className="font-medium">{error}</p>
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full max-w-5xl">
           {/* Encode Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-            <h3 className="text-xl font-semibold mb-4 flex items-center">
-              <Lock className="mr-2 text-indigo-600 dark:text-indigo-400" size={20} />
-              Encode Message
+          <div className="bg-surface-light/40 backdrop-blur-xl border border-surface-border rounded-2xl p-8 shadow-2xl transition-all duration-300 hover:border-surface-border/80">
+            <h3 className="text-2xl font-semibold mb-6 flex items-center text-white">
+              <Lock className="mr-3 text-brand-400" size={24} />
+              Encrypt & Embed
             </h3>
             
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Upload Image</label>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Carrier Image</label>
               <div 
                 onClick={() => encodeFileInput.current?.click()}
-                className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center transition-colors hover:border-indigo-500 dark:hover:border-indigo-400 cursor-pointer"
+                className="border-2 border-dashed border-surface-border hover:border-brand-500/50 hover:bg-brand-500/5 rounded-xl p-8 text-center transition-all duration-300 cursor-pointer group"
               >
                 {!encodeImage ? (
                   <>
-                    <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
-                    <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">Click to browse or drag & drop</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">PNG or JPG recommended (Max: 5MB)</p>
+                    <div className="bg-surface-lighter rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <ImageIcon className="text-gray-400 group-hover:text-brand-400 transition-colors" size={28} />
+                    </div>
+                    <p className="text-sm font-medium text-gray-300">Click to browse or drag & drop</p>
+                    <p className="text-xs text-gray-500 mt-2">PNG or JPG (Max 5MB)</p>
                   </>
                 ) : (
-                  <div>
-                    <img src={encodeImage} className="max-h-48 mx-auto rounded" alt="Preview" />
-                    <p className="mt-2 text-xs text-indigo-600 dark:text-indigo-400 hover:underline">Change image</p>
+                  <div className="relative group/img">
+                    <img src={encodeImage} className="max-h-48 mx-auto rounded-lg shadow-lg ring-1 ring-white/10" alt="Preview" />
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/img:opacity-100 flex items-center justify-center transition-opacity rounded-lg">
+                      <p className="text-sm font-medium text-white flex items-center"><ImageIcon size={16} className="mr-2"/> Change Image</p>
+                    </div>
                   </div>
                 )}
                 <input ref={encodeFileInput} onChange={(e) => handleImageUpload(e, 'encode')} type="file" className="hidden" accept="image/png,image/jpeg" />
@@ -193,173 +176,177 @@ export default function Home() {
             </div>
 
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Secret Message</label>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Secret Payload</label>
               <div className="relative">
                 <textarea 
                   rows="4" 
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full px-3 py-2 text-gray-700 dark:text-gray-300 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 dark:border-gray-600" 
-                  placeholder="Type your secret message here..."
+                  className="w-full px-4 py-3 text-gray-200 bg-black/50 border border-surface-border rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all placeholder-gray-600 resize-none font-mono text-sm" 
+                  placeholder="Enter classified data here..."
                 />
-                <div className="absolute bottom-2 right-2 text-xs text-gray-500 dark:text-gray-400">{message.length} characters</div>
+                <div className="absolute bottom-3 right-3 text-xs text-gray-500 font-mono">{message.length} chars</div>
               </div>
             </div>
 
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password (Optional)</label>
-                <div className="flex items-center">
-                  <input 
-                    type="checkbox" 
-                    checked={usePassword} 
-                    onChange={(e) => setUsePassword(e.target.checked)} 
-                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" 
-                  />
-                  <span className="ml-2 text-xs text-gray-600 dark:text-gray-400">Enable password</span>
-                </div>
+            <div className="mb-8 p-5 bg-black/30 border border-surface-border rounded-xl">
+              <div className="flex items-center justify-between mb-4">
+                <label className="block text-sm font-medium text-gray-300">AES-256 Encryption</label>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" checked={usePassword} onChange={(e) => setUsePassword(e.target.checked)} className="sr-only peer" />
+                  <div className="w-11 h-6 bg-surface-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500"></div>
+                </label>
               </div>
               <input 
                 type="password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={!usePassword}
-                className="w-full px-3 py-2 text-gray-700 dark:text-gray-300 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed" 
-                placeholder="Enter a password for extra security" 
+                className="w-full px-4 py-3 text-gray-200 bg-black/50 border border-surface-border rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all placeholder-gray-600 disabled:opacity-30 disabled:cursor-not-allowed font-mono text-sm" 
+                placeholder="Enter encryption key..." 
               />
             </div>
 
             <button 
               onClick={handleEncode}
               disabled={!encodeImage || !message}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
+              className="w-full bg-brand-500 hover:bg-brand-400 text-black font-bold py-3.5 px-4 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:bg-surface-border disabled:text-gray-500 flex justify-center items-center group shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:shadow-[0_0_25px_rgba(20,184,166,0.5)] active:scale-[0.98]"
             >
-              <Lock className="mr-2" size={16} /> Encode Message
+              <Lock className="mr-2 group-hover:scale-110 transition-transform" size={18} /> INITIALIZE ENCRYPTION
             </button>
           </div>
 
-          {/* Right Column: Result or Decode */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-            <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6">
+          {/* Result / Decode Section */}
+          <div className="bg-surface-light/40 backdrop-blur-xl border border-surface-border rounded-2xl p-8 shadow-2xl flex flex-col transition-all duration-300 hover:border-surface-border/80">
+            <div className="flex bg-black/50 p-1 rounded-xl mb-8 border border-surface-border">
               <button 
                 onClick={() => setActiveTab('result')}
-                className={`py-2 px-4 font-medium border-b-2 ${activeTab === 'result' || activeTab === 'encode' ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-gray-500 dark:text-gray-400'}`}
+                className={`flex-1 py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 ${activeTab === 'result' || activeTab === 'encode' ? 'bg-surface-lighter text-brand-400 shadow-sm' : 'text-gray-500 hover:text-gray-300'}`}
               >
-                Result
+                Output Asset
               </button>
               <button 
                 onClick={() => setActiveTab('decode')}
-                className={`py-2 px-4 font-medium border-b-2 ${activeTab === 'decode' ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-gray-500 dark:text-gray-400'}`}
+                className={`flex-1 py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 ${activeTab === 'decode' ? 'bg-surface-lighter text-brand-400 shadow-sm' : 'text-gray-500 hover:text-gray-300'}`}
               >
-                Decode
+                Decrypt & Extract
               </button>
             </div>
 
-            {/* Result Tab Content */}
-            {(activeTab === 'result' || activeTab === 'encode') && (
-              <div>
-                {!encodedResult ? (
-                  <div className="text-center py-12">
-                    <ImageIcon className="mx-auto text-gray-400" size={48} />
-                    <h3 className="mt-4 text-lg font-medium text-gray-700 dark:text-gray-300">No encoded image yet</h3>
-                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Upload an image and add your message to get started</p>
-                  </div>
-                ) : (
-                  <div>
-                    <h3 className="text-xl font-semibold mb-4 flex items-center">
-                      <Download className="mr-2 text-indigo-600 dark:text-indigo-400" size={20} />
-                      Encoded Result
-                    </h3>
-                    <div className="mb-6 text-center">
-                      <img src={encodedResult} className="max-h-64 mx-auto rounded border dark:border-gray-700" alt="Encoded image" />
-                      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">Your message has been successfully hidden in this image.</p>
+            <div className="flex-1 flex flex-col">
+              {/* Result Tab */}
+              {(activeTab === 'result' || activeTab === 'encode') && (
+                <div className="flex-1 flex flex-col">
+                  {!encodedResult ? (
+                    <div className="text-center py-16 flex-1 flex flex-col justify-center items-center border border-dashed border-surface-border rounded-xl bg-black/20">
+                      <ShieldCheck className="text-surface-border mb-4" size={56} />
+                      <h3 className="text-lg font-medium text-gray-400">Awaiting processing...</h3>
+                      <p className="mt-2 text-sm text-gray-500 max-w-xs">Encrypt and embed data to generate a secured output asset.</p>
                     </div>
-                    <a 
-                      href={encodedResult} 
-                      download="stego-image.png"
-                      className="block w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex justify-center items-center"
-                    >
-                      <Download className="mr-2" size={16} /> Download Image
-                    </a>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Decode Tab Content */}
-            {activeTab === 'decode' && (
-              <div>
-                <h3 className="text-xl font-semibold mb-4 flex items-center">
-                  <Unlock className="mr-2 text-indigo-600 dark:text-indigo-400" size={20} />
-                  Decode Message
-                </h3>
-                
-                <div className="mb-6">
-                  <div 
-                    onClick={() => decodeFileInput.current?.click()}
-                    className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center transition-colors hover:border-indigo-500 dark:hover:border-indigo-400 cursor-pointer"
-                  >
-                    {!decodeImage ? (
-                      <>
-                        <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
-                        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">Upload an image with a hidden message</p>
-                      </>
-                    ) : (
-                      <div>
-                        <img src={decodeImage} className="max-h-48 mx-auto rounded" alt="Decode Preview" />
-                        <p className="mt-2 text-xs text-indigo-600 dark:text-indigo-400 hover:underline">Change image</p>
+                  ) : (
+                    <div className="flex-1 flex flex-col animate-slide-in">
+                      <h3 className="text-xl font-semibold mb-6 flex items-center text-white">
+                        <Download className="mr-3 text-brand-400" size={20} />
+                        Secured Asset Ready
+                      </h3>
+                      <div className="mb-8 text-center flex-1 flex items-center justify-center bg-black/40 border border-surface-border rounded-xl p-4">
+                        <img src={encodedResult} className="max-h-64 rounded shadow-[0_0_30px_rgba(20,184,166,0.15)] ring-1 ring-brand-500/30" alt="Encoded image" />
                       </div>
-                    )}
-                    <input ref={decodeFileInput} onChange={(e) => handleImageUpload(e, 'decode')} type="file" className="hidden" accept="image/png,image/jpeg" />
-                  </div>
+                      <a 
+                        href={encodedResult} 
+                        download="secure-asset.png"
+                        className="w-full bg-white hover:bg-gray-200 text-black font-bold py-3.5 px-4 rounded-xl transition-all duration-300 flex justify-center items-center group active:scale-[0.98]"
+                      >
+                        <Download className="mr-2 group-hover:-translate-y-1 transition-transform" size={18} /> EXPORT SECURE ASSET
+                      </a>
+                    </div>
+                  )}
                 </div>
+              )}
 
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password (If required)</label>
-                  <input 
-                    type="password" 
-                    value={decodePassword}
-                    onChange={(e) => setDecodePassword(e.target.value)}
-                    className="w-full px-3 py-2 text-gray-700 dark:text-gray-300 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 dark:border-gray-600" 
-                    placeholder="Enter password if the message was encrypted" 
-                  />
-                </div>
-
-                <button 
-                  onClick={handleDecode}
-                  disabled={!decodeImage}
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <Unlock className="mr-2" size={16} /> Decode Message
-                </button>
-
-                {decodedMessage && (
-                  <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <h4 className="font-medium text-gray-800 dark:text-gray-200 mb-2">Decoded Message:</h4>
-                    <div className="p-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded text-gray-800 dark:text-gray-200 min-h-[100px] whitespace-pre-wrap">
-                      {decodedMessage}
+              {/* Decode Tab */}
+              {activeTab === 'decode' && (
+                <div className="flex-1 flex flex-col animate-slide-in">
+                  <h3 className="text-xl font-semibold mb-6 flex items-center text-white">
+                    <Unlock className="mr-3 text-brand-400" size={24} />
+                    Extract Payload
+                  </h3>
+                  
+                  <div className="mb-6">
+                    <div 
+                      onClick={() => decodeFileInput.current?.click()}
+                      className="border-2 border-dashed border-surface-border hover:border-brand-500/50 hover:bg-brand-500/5 rounded-xl p-8 text-center transition-all duration-300 cursor-pointer group"
+                    >
+                      {!decodeImage ? (
+                        <>
+                          <div className="bg-surface-lighter rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <ImageIcon className="text-gray-400 group-hover:text-brand-400 transition-colors" size={28} />
+                          </div>
+                          <p className="text-sm font-medium text-gray-300">Upload secured image asset</p>
+                        </>
+                      ) : (
+                        <div className="relative group/img">
+                          <img src={decodeImage} className="max-h-48 mx-auto rounded-lg shadow-lg ring-1 ring-white/10" alt="Decode Preview" />
+                          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/img:opacity-100 flex items-center justify-center transition-opacity rounded-lg">
+                            <p className="text-sm font-medium text-white flex items-center"><ImageIcon size={16} className="mr-2"/> Change Image</p>
+                          </div>
+                        </div>
+                      )}
+                      <input ref={decodeFileInput} onChange={(e) => handleImageUpload(e, 'decode')} type="file" className="hidden" accept="image/png,image/jpeg" />
                     </div>
                   </div>
-                )}
-              </div>
-            )}
+
+                  <div className="mb-8">
+                    <label className="block text-sm font-medium text-gray-300 mb-2">Decryption Key (If AES encrypted)</label>
+                    <input 
+                      type="password" 
+                      value={decodePassword}
+                      onChange={(e) => setDecodePassword(e.target.value)}
+                      className="w-full px-4 py-3 text-gray-200 bg-black/50 border border-surface-border rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all placeholder-gray-600 font-mono text-sm" 
+                      placeholder="Enter decryption key..." 
+                    />
+                  </div>
+
+                  <button 
+                    onClick={handleDecode}
+                    disabled={!decodeImage}
+                    className="w-full mb-6 bg-brand-500 hover:bg-brand-400 text-black font-bold py-3.5 px-4 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:bg-surface-border disabled:text-gray-500 flex justify-center items-center group active:scale-[0.98] shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:shadow-[0_0_25px_rgba(20,184,166,0.5)]"
+                  >
+                    <Unlock className="mr-2 group-hover:scale-110 transition-transform" size={18} /> DECRYPT & EXTRACT
+                  </button>
+
+                  {decodedMessage && (
+                    <div className="mt-2 p-5 bg-black/80 border border-brand-500/30 rounded-xl shadow-[0_0_20px_rgba(20,184,166,0.1)] animate-fade-in relative overflow-hidden">
+                      <div className="absolute top-0 left-0 w-full h-1 bg-glow-gradient"></div>
+                      <h4 className="font-medium text-gray-400 text-xs uppercase tracking-wider mb-3">Extracted Payload:</h4>
+                      <div className="font-mono text-brand-200 text-sm whitespace-pre-wrap break-words">
+                        {decodedMessage}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </main>
 
-      <footer className="bg-white dark:bg-gray-800 shadow-inner mt-12 py-6 relative z-10">
-        <div className="container mx-auto px-4 text-center text-gray-600 dark:text-gray-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} StegoWeb. All rights reserved.</p>
+      <footer className="border-t border-surface-border bg-black/50 py-6 mt-12">
+        <div className="container mx-auto px-6 text-center text-gray-500 text-sm font-medium">
+          <p>CryptoLens &copy; {new Date().getFullYear()}. Secure by Design.</p>
         </div>
       </footer>
 
-      {/* Loading Overlay */}
+      {/* Futuristic Loading Overlay */}
       {loading && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm w-full text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-            <p className="mt-4 text-gray-700 dark:text-gray-300">{loadingText}</p>
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center z-50 animate-fade-in">
+          <div className="relative w-24 h-24 mb-6 flex items-center justify-center">
+            <div className="absolute inset-0 border-t-2 border-brand-500 rounded-full animate-spin"></div>
+            <div className="absolute inset-2 border-b-2 border-brand-400 rounded-full animate-spin animation-delay-200"></div>
+            <div className="absolute inset-4 border-l-2 border-brand-300 rounded-full animate-spin animation-delay-400"></div>
+            <ShieldCheck className="text-brand-500 animate-pulse" size={24} />
           </div>
+          <p className="text-brand-400 font-mono tracking-widest uppercase text-sm animate-pulse">{loadingText}</p>
         </div>
       )}
     </>
