@@ -220,18 +220,18 @@ export default function Home() {
           {/* Result / Decode Section */}
           <div className="bg-surface-light/40 backdrop-blur-xl border border-surface-border rounded-2xl p-8 shadow-2xl flex flex-col transition-all duration-300 hover:border-surface-border/80">
             <div className="flex bg-black/50 p-1 rounded-xl mb-8 border border-surface-border">
-              <OriginButton 
+              <button 
                 onClick={() => setActiveTab('result')}
-                className={`flex-1 h-auto py-2.5 px-4 rounded-lg font-medium text-sm border-none ${activeTab === 'result' || activeTab === 'encode' ? 'bg-surface-lighter text-brand-400 shadow-sm' : 'bg-transparent text-gray-500 hover:text-gray-300 hover:bg-transparent'}`}
+                className={`flex-1 py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 ${activeTab === 'result' || activeTab === 'encode' ? 'bg-surface-lighter text-brand-400 shadow-sm' : 'text-gray-500 hover:text-gray-300'}`}
               >
                 Output Asset
-              </OriginButton>
-              <OriginButton 
+              </button>
+              <button 
                 onClick={() => setActiveTab('decode')}
-                className={`flex-1 h-auto py-2.5 px-4 rounded-lg font-medium text-sm border-none ${activeTab === 'decode' ? 'bg-surface-lighter text-brand-400 shadow-sm' : 'bg-transparent text-gray-500 hover:text-gray-300 hover:bg-transparent'}`}
+                className={`flex-1 py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 ${activeTab === 'decode' ? 'bg-surface-lighter text-brand-400 shadow-sm' : 'text-gray-500 hover:text-gray-300'}`}
               >
                 Decrypt & Extract
-              </OriginButton>
+              </button>
             </div>
 
             <div className="flex-1 flex flex-col">
