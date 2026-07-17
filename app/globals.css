@@ -1,3 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+}
+
 :root {
   --transition-speed: 0.2s;
 }
@@ -42,26 +55,6 @@ main {
 
 .animate-slide-in {
   animation: slideIn 0.3s ease-in-out;
-}
-
-/* Image upload hover effects */
-#upload-container:hover,
-#decode-upload-container:hover {
-  background-color: rgba(79, 70, 229, 0.05);
-}
-
-/* Button hover effects */
-button:not(:disabled) {
-  transform: translateY(0);
-  transition: transform 0.1s ease-in-out, background-color 0.2s ease-in-out;
-}
-
-button:not(:disabled):hover {
-  transform: translateY(-1px);
-}
-
-button:not(:disabled):active {
-  transform: translateY(1px);
 }
 
 /* Scrollbar styling */
