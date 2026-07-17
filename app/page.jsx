@@ -211,7 +211,7 @@ export default function Home() {
             <OriginButton 
               onClick={handleEncode}
               disabled={!encodeImage || !message}
-              className="w-full bg-brand-500 hover:bg-brand-400 text-black font-bold py-3.5 px-4 rounded-xl disabled:opacity-50 disabled:bg-surface-border disabled:text-gray-500 shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:shadow-[0_0_25px_rgba(20,184,166,0.5)] flex items-center justify-center group border-none"
+              className="w-full bg-surface-lighter text-brand-400 font-bold py-3.5 px-4 rounded-xl disabled:opacity-50 disabled:bg-surface-border disabled:text-gray-500 shadow-[0_0_20px_rgba(20,184,166,0.1)] hover:shadow-[0_0_25px_rgba(20,184,166,0.4)] flex items-center justify-center group border border-brand-500/30"
             >
               <Lock className="mr-2 group-hover:scale-110 transition-transform" size={18} /> INITIALIZE ENCRYPTION
             </OriginButton>
@@ -260,7 +260,7 @@ export default function Home() {
                           link.download = 'secure-asset.png';
                           link.click();
                         }}
-                        className="w-full bg-white hover:bg-gray-200 text-black font-bold py-3.5 px-4 rounded-xl flex items-center justify-center group border-none"
+                        className="w-full bg-surface-lighter text-brand-400 font-bold py-3.5 px-4 rounded-xl flex items-center justify-center group border border-brand-500/30 shadow-[0_0_20px_rgba(20,184,166,0.1)] hover:shadow-[0_0_25px_rgba(20,184,166,0.4)]"
                       >
                         <Download className="mr-2 group-hover:-translate-y-1 transition-transform" size={18} /> EXPORT SECURE ASSET
                       </OriginButton>
@@ -315,7 +315,7 @@ export default function Home() {
                   <OriginButton 
                     onClick={handleDecode}
                     disabled={!decodeImage}
-                    className="w-full mb-6 bg-brand-500 hover:bg-brand-400 text-black font-bold py-3.5 px-4 rounded-xl disabled:opacity-50 disabled:bg-surface-border disabled:text-gray-500 shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:shadow-[0_0_25px_rgba(20,184,166,0.5)] flex items-center justify-center group border-none"
+                    className="w-full mb-6 bg-surface-lighter text-brand-400 font-bold py-3.5 px-4 rounded-xl disabled:opacity-50 disabled:bg-surface-border disabled:text-gray-500 shadow-[0_0_20px_rgba(20,184,166,0.1)] hover:shadow-[0_0_25px_rgba(20,184,166,0.4)] flex items-center justify-center group border border-brand-500/30"
                   >
                     <Unlock className="mr-2 group-hover:scale-110 transition-transform" size={18} /> DECRYPT & EXTRACT
                   </OriginButton>
