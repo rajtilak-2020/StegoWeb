@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "crypto-js": "^4.2.0",
     "lucide-react": "^0.344.0",
     "next": "latest",
     "react": "^18.3.1",
