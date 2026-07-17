@@ -281,13 +281,15 @@ const OriginButton = React.forwardRef<HTMLButtonElement, OriginButtonProps>(
         <motion.span
           animate={{ scale: showFill && coverSize > 0 ? 1 : 0 }}
           aria-hidden
-          className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-500"
+          className="pointer-events-none absolute rounded-full bg-brand-500"
           initial={false}
           style={{
             height: coverSize,
             left: origin.x,
             top: origin.y,
             width: coverSize,
+            x: "-50%",
+            y: "-50%",
           }}
           transition={fillTransition}
         />
