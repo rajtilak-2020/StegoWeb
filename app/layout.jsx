@@ -1,17 +1,17 @@
 import './globals.css';
-import { Inter } from 'next/font/google';
+import { Space_Grotesk } from 'next/font/google';
 
-const inter = Inter({ subsets: ['latin'] });
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'StegoWeb | Online Steganography',
-  description: 'A simple steganography tool to hide text inside images',
+  title: 'CryptoLens | Advanced Steganography',
+  description: 'Military-grade secure steganography tool',
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} font-sans antialiased bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-200`}>
+    <html lang="en" className="dark">
+      <body className={`${spaceGrotesk.className} font-sans antialiased bg-black text-gray-100 min-h-screen flex flex-col selection:bg-brand-500/30 selection:text-brand-200`}>
         {children}
       </body>
     </html>
