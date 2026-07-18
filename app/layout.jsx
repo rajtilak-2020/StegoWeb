@@ -1,6 +1,6 @@
 import './globals.css';
 import { Space_Grotesk } from 'next/font/google';
-import { CanvasRevealEffect } from '../components/ui/canvas-reveal-effect';
+import { HexagonPattern } from '../components/ui/hexagon-pattern';
 
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'] });
 
@@ -14,15 +14,12 @@ export default function RootLayout({ children }) {
     <html lang="en" className="dark">
       <body className={`${spaceGrotesk.className} font-sans antialiased bg-black text-gray-100 min-h-screen flex flex-col selection:bg-brand-500/30 selection:text-brand-200 relative overflow-x-hidden`}>
         <div className="fixed inset-0 z-0 pointer-events-none">
-          <CanvasRevealEffect
-            animationSpeed={0.5}
-            containerClassName="bg-black"
-            colors={[[20, 184, 166]]}
-            opacities={[0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.4, 0.4, 0.4, 1]}
-            dotSize={2}
-            showGradient={false}
+          <HexagonPattern
+            className="opacity-50 stroke-brand-500/20 fill-brand-500/5"
+            radius={35}
+            gap={2}
           />
-          <div className="absolute inset-0 bg-black/60 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
+          <div className="absolute inset-0 bg-black/80 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
         </div>
         <div className="relative z-10 flex flex-col flex-1">
           {children}
