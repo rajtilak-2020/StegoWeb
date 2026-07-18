@@ -14,7 +14,6 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { OriginButton } from '../components/ui/origin-button';
-import { GlowingCard } from '../components/ui/glowing-card';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -185,7 +184,7 @@ export default function Home() {
         >
           {/* Encode Section */}
           <motion.div variants={itemVariants}>
-            <GlowingCard className="p-8 h-full flex flex-col">
+            <div className="md:px-4 h-full flex flex-col">
               <h3 className="text-2xl font-bold mb-8 flex items-center text-white tracking-tight">
                 <Lock className="mr-3 text-brand-400" size={26} />
                 Encrypt & Embed
@@ -256,12 +255,12 @@ export default function Home() {
               >
                 <Lock className="mr-3 group-hover:scale-110 transition-transform" size={20} /> INITIALIZE
               </OriginButton>
-            </GlowingCard>
+            </div>
           </motion.div>
 
           {/* Result / Decode Section */}
           <motion.div variants={itemVariants} className="h-full">
-            <GlowingCard className="p-8 h-full flex flex-col">
+            <div className="md:px-4 h-full flex flex-col">
               <div className="flex bg-black/40 p-1.5 rounded-xl mb-8 border border-white/5 relative z-10">
                 <button 
                   onClick={() => setActiveTab('result')}
@@ -400,7 +399,7 @@ export default function Home() {
                   </motion.div>
                 )}
               </div>
-            </GlowingCard>
+            </div>
           </motion.div>
         </motion.div>
       </main>
