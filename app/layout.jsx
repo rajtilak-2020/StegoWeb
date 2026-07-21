@@ -1,6 +1,7 @@
 import './globals.css';
 import { Space_Grotesk } from 'next/font/google';
-import { CanvasRevealEffect } from '../components/ui/canvas-reveal-effect';
+import { HexagonPattern } from '../components/ui/hexagon-pattern';
+import { CursorFollower } from '../components/ui/cursor-follower';
 
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'] });
 
@@ -13,16 +14,19 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark">
       <body className={`${spaceGrotesk.className} font-sans antialiased bg-black text-gray-100 min-h-screen flex flex-col selection:bg-brand-500/30 selection:text-brand-200 relative overflow-x-hidden`}>
+        <CursorFollower />
         <div className="fixed inset-0 z-0 pointer-events-none">
-          <CanvasRevealEffect
-            animationSpeed={0.5}
-            containerClassName="bg-black"
-            colors={[[20, 184, 166]]}
-            opacities={[0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.4, 0.4, 0.4, 1]}
-            dotSize={2}
-            showGradient={false}
+          <HexagonPattern
+            className="opacity-100 stroke-white/10 fill-white/10"
+            radius={40}
+            gap={1}
+            hexagons={[
+              [2, 3], [3, 4], [4, 5], [5, 4], [6, 3], 
+              [3, 2], [4, 2], [8, 4], [10, 6], [12, 3],
+              [7, 7], [8, 8], [9, 7], [13, 8], [2, 8]
+            ]}
           />
-          <div className="absolute inset-0 bg-black/60 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
+          <div className="absolute inset-0 bg-black/40 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
         </div>
         <div className="relative z-10 flex flex-col flex-1">
           {children}
